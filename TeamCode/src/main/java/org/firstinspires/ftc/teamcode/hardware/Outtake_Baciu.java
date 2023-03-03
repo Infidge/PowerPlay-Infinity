@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.hardware;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeArm;
-import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClaw;
+import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeArmAngle;
+import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClawState;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeSlidersPosition;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeSlidersState;
 
@@ -16,8 +16,8 @@ public class Outtake_Baciu {
     private int slidersPosition = 0;
 
     public void init() {
-        moveClaw(OuttakeClaw.CLOSED);
-        moveArm(OuttakeArm.COLLECT);
+        moveClaw(OuttakeClawState.CLOSED);
+        moveArm(OuttakeArmAngle.COLLECT);
     }
 
     public void tickLimitSwitch() {
@@ -60,14 +60,14 @@ public class Outtake_Baciu {
         this.slidersPosition = outtakeSlidersPosition.getPosition();
     }
 
-    public void moveArm(final OuttakeArm outtakeArm) {
-        Hardware_Baciu.outtakeArmLeft.setPosition(outtakeArm.getPosition());
-        Hardware_Baciu.outtakeArmRight.setPosition(1 - outtakeArm.getPosition());
+    public void moveArm(final OuttakeArmAngle outtakeArmAngle) {
+        Hardware_Baciu.outtakeArmLeft.setPosition(outtakeArmAngle.getAngle());
+        Hardware_Baciu.outtakeArmRight.setPosition(1 - outtakeArmAngle.getAngle());
     }
 
-    public void moveClaw(final OuttakeClaw outtakeClaw) {
-        Hardware_Baciu.outtakeClaw.setPosition(outtakeClaw.getPosition());
-        clawOpen = outtakeClaw == OuttakeClaw.OPEN;
+    public void moveClaw(final OuttakeClawState outtakeClawState) {
+        Hardware_Baciu.outtakeClaw.setPosition(outtakeClawState.getPosition());
+        clawOpen = outtakeClawState == OuttakeClawState.OPEN;
     }
 
     public boolean isClawOpen() {

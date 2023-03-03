@@ -2,32 +2,88 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.hardware.Drivetrain_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.Hardware_Baciu;
-import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeArm;
-import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClaw;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeArmAngle;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawAngle;
+import org.firstinspires.ftc.teamcode.hardware.Intake_Baciu;
+import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeArmAngle;
+import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClawState;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeSlidersPosition;
 import org.firstinspires.ftc.teamcode.hardware.Outtake_Baciu;
 
-@TeleOp(name = "Teleop_Baciu", group = "Baciu")
+@TeleOp(name = "TeleOp_Baciu", group = "Baciu")
 public class TeleOp_Baciu extends LinearOpMode {
 
     private final Drivetrain_Baciu drivetrain = new Drivetrain_Baciu();
+    private final Intake_Baciu intake = new Intake_Baciu();
     private final Outtake_Baciu outtake = new Outtake_Baciu();
 
     @Override
     public void runOpMode() {
         Hardware_Baciu.init(hardwareMap);
+
+        if (Hardware_Baciu.intakeSliders.getMode() != DcMotor.RunMode.RUN_TO_POSITION) terminateOpModeNow();
+
+        intake.init();
         outtake.init();
+
+        Gamepad.LedEffect ledEffect1 = new Gamepad.LedEffect.Builder()
+                .addStep(177, 94, 224, 3000)
+                .addStep(0, 0, 0, 3000)
+                .setRepeating(true)
+                .build();
+
+        Gamepad.LedEffect ledEffect2 = new Gamepad.LedEffect.Builder()
+                .addStep(129, 235, 108, 3000)
+                .addStep(0, 0, 0, 3000)
+                .setRepeating(true)
+                .build();
 
         waitForStart();
 
+        // TODO Package-private modifier for hardware
+        // TODO Proper constants for IntakeArmAngle, IntakeClawAngle
+
         while (opModeIsActive()) {
+            if (gamepad1.left_bumper || gamepad2.left_bumper) terminateOpModeNow();
+
             // Gamepad 1
+            gamepad1.runLedEffect(ledEffect1);
+
             drivetrain.mecanumDrive(gamepad1);
 
+            // TODO Opening and closing intake claw
+
+            if (gamepad1.a) {
+                intake.moveArm(IntakeArmAngle.PICKUP_CONE);
+                intake.moveClawAngle(IntakeClawAngle.PICKUP_CONE);
+            } else if (gamepad1.b) {
+                intake.moveArm(IntakeArmAngle.TRANSFER_CONE);
+                intake.moveClawAngle(IntakeClawAngle.TRANSFER_CONE);
+            }
+
+            if (gamepad1.x) {
+                intake.retractSliders();
+            }
+
+            if (gamepad1.y) {
+                intake.saveSlidersPosition();
+            }
+
+            if (gamepad1.right_bumper) {
+                intake.moveSlidersToSavedPosition();
+            }
+
+            intake.tickLimitSwitch();
+            intake.moveSlidersManually(gamepad1);
+
             // Gamepad 2
+            gamepad2.runLedEffect(ledEffect2);
+
             if (gamepad2.left_bumper) {
                 outtake.lowerSliders();
             } else if (gamepad2.dpad_down) {
@@ -38,16 +94,17 @@ public class TeleOp_Baciu extends LinearOpMode {
                 outtake.moveSliders(OuttakeSlidersPosition.HIGH_JUNCTION);
             }
 
+            // TODO Implement `OuttakeArmAngle.DROP_LOW_JUNCTION`
             if (gamepad2.b) {
-                outtake.moveArm(OuttakeArm.COLLECT);
+                outtake.moveArm(OuttakeArmAngle.COLLECT);
             } else if (gamepad2.x) {
-                outtake.moveArm(OuttakeArm.DROP);
+                outtake.moveArm(OuttakeArmAngle.DROP_MID_OR_HIGH_JUNCTION);
             }
 
             if (gamepad2.a) {
-                outtake.moveClaw(OuttakeClaw.CLOSED);
+                outtake.moveClaw(OuttakeClawState.CLOSED);
             } else if (gamepad2.y) {
-                outtake.moveClaw(OuttakeClaw.OPEN);
+                outtake.moveClaw(OuttakeClawState.OPEN);
             }
 
             outtake.tickLimitSwitch();

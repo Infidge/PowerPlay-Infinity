@@ -21,18 +21,19 @@ public class Hardware_Baciu {
     public static DigitalChannel limitSwitchLeft;
     public static DigitalChannel limitSwitchRight;
 
-    public static Servo outtakeClaw;
     public static Servo outtakeArmLeft;
     public static Servo outtakeArmRight;
+    public static Servo outtakeClaw;
 
-//    public static DcMotorEx intakeSliders;
+    public static DcMotorEx intakeSliders;
 
-//    public static Servo intakeClaw;
-//    public static Servo intakeClawAngle;
-//    public static Servo intakeArm;
+    public static Servo intakeArm;
+    public static Servo intakeClaw;
+    public static Servo intakeClawAngle;
+
 //    public static RevColorSensorV3 intakeSensor;
 
-//    public static DigitalChannel limitSwitchIntake;
+    public static DigitalChannel intakeLimitSwitch;
 
     public static DcMotorEx leftEncoder;
     public static DcMotorEx rightEncoder;
@@ -91,27 +92,20 @@ public class Hardware_Baciu {
         outtakeArmLeft = hardwareMap.get(Servo.class, "outtakeArmLeft");
         outtakeArmRight = hardwareMap.get(Servo.class, "outtakeArmRight");
 
-//        intakeSliders = hardwareMap.get(DcMotorEx.class, "intake");
-//
-//        intakeSliders.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        intakeSliders.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        intakeSliders.setPower(-0.2);
-//
-//        intakeSliders.setDirection(DcMotorSimple.Direction.FORWARD);
-//
-//        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
-//        intakeClawAngle = hardwareMap.get(Servo.class, "moveIntake");
-//        intakeArm = hardwareMap.get(Servo.class, "intakeArm");
-//
-//        intakeClaw.setPosition(Constant.openIntake);
-//        intakeClawAngle.setPosition(0.5);
-//        intakeArm.setPosition(Constant.armDropCone);
-//
+        intakeSliders = hardwareMap.get(DcMotorEx.class, "intake");
+
+        intakeSliders.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intakeSliders.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeSliders.setPower(0.0);
+        intakeSliders.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        intakeArm = hardwareMap.get(Servo.class, "intakeArm");
+        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
+        intakeClawAngle = hardwareMap.get(Servo.class, "moveIntake");
+
 //        intakeSensor = hardwareMap.get(RevColorSensorV3.class, "intakeSensor");
-//
-//        limitSwitchIntake = hardwareMap.get(DigitalChannel.class, "limitSwitchIntake");
+
+        intakeLimitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitchIntake");
 
         leftEncoder = hardwareMap.get(DcMotorEx.class, "backLeft");
         rightEncoder = hardwareMap.get(DcMotorEx.class, "backRight");
