@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Drivetrain_Baciu {
 
-    public Drivetrain_Baciu() {}
+
 
     public void mecanumDrive(Gamepad gamepad) {
         double drive, strafe, turn, brake;
@@ -37,10 +37,10 @@ public class Drivetrain_Baciu {
             brspeed /= max;
         }
 
-        Hardware.motorFl.setPower(flspeed * brake);
-        Hardware.motorFr.setPower(frspeed * brake);
-        Hardware.motorBl.setPower(blspeed * brake);
-        Hardware.motorBr.setPower(brspeed * brake);
+        Hardware_Baciu.motorFl.setPower(flspeed * brake);
+        Hardware_Baciu.motorFr.setPower(frspeed * brake);
+        Hardware_Baciu.motorBl.setPower(blspeed * brake);
+        Hardware_Baciu.motorBr.setPower(brspeed * brake);
     }
 
 }

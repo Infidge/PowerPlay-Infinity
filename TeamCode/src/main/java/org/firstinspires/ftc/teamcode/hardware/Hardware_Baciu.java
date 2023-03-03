@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
-import com.qualcomm.hardware.rev.RevColorSensorV3;
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -12,26 +8,22 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.checkerframework.checker.units.qual.C;
-import org.firstinspires.ftc.robotcore.internal.network.WifiStartStoppable;
-import org.firstinspires.ftc.teamcode.Constant;
-
 public class Hardware_Baciu {
 
     public static DcMotorEx motorFl;
+    public static DcMotorEx motorFr;
     public static DcMotorEx motorBl;
     public static DcMotorEx motorBr;
-    public static DcMotorEx motorFr;
 
-//    public static DcMotorEx slider1;
-//    public static DcMotorEx slider2;
+    public static DcMotorEx sliderLeft;
+    public static DcMotorEx sliderRight;
 
-//    public static DigitalChannel limitSwitch1;
-//    public static DigitalChannel limitSwitch2;
+    public static DigitalChannel limitSwitchLeft;
+    public static DigitalChannel limitSwitchRight;
 
-//    public static Servo outtakeClaw;
-//    public static Servo outtakeArmLeft;
-//    public static Servo outtakeArmRight;
+    public static Servo outtakeClaw;
+    public static Servo outtakeArmLeft;
+    public static Servo outtakeArmRight;
 
 //    public static DcMotorEx intakeSliders;
 
@@ -48,9 +40,9 @@ public class Hardware_Baciu {
 
     public static LynxModule expansionHub;
 
-    public Hardware_Baciu() {}
+    private Hardware_Baciu() {}
 
-    public static void init(HardwareMap hardwareMap) {
+    public static void init(final HardwareMap hardwareMap) {
         motorFl = hardwareMap.get(DcMotorEx.class, "frontLeft");
         motorFr = hardwareMap.get(DcMotorEx.class, "frontRight");
         motorBl = hardwareMap.get(DcMotorEx.class, "backLeft");
@@ -76,36 +68,29 @@ public class Hardware_Baciu {
         motorBl.setDirection(DcMotorSimple.Direction.REVERSE);
         motorBr.setDirection(DcMotorSimple.Direction.FORWARD);
 
-//        slider1 = hardwareMap.get(DcMotorEx.class, "sliderL");
-//        slider2 = hardwareMap.get(DcMotorEx.class, "sliderR");
-//
-//        slider1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        slider1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        slider2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//        slider1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        slider2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        slider1.setPower(0.0);
-//        slider2.setPower(0.0);
-//
-//        slider1.setDirection(DcMotorSimple.Direction.REVERSE);
-//        slider2.setDirection(DcMotorSimple.Direction.REVERSE);
-//
-//        outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
-//        outtakeArmLeft = hardwareMap.get(Servo.class, "outtakeArmLeft");
-//        outtakeArmRight = hardwareMap.get(Servo.class, "outtakeArmRight");
-//
-//        outtakeClaw .setPosition(Constant.closedClaw);
-//        outtakeArmLeft.setPosition(0.0);
-//        outtakeArmRight.setPosition(1.0);
-//
-//        outtakeSensor = hardwareMap.get(Rev2mDistanceSensor.class, "clawSensor");
-//
-//        limitSwitch1 = hardwareMap.get(DigitalChannel.class, "limitSwitch1");
-//        limitSwitch2 = hardwareMap.get(DigitalChannel.class, "limitSwitch2");
-//
+        sliderLeft = hardwareMap.get(DcMotorEx.class, "sliderL");
+        sliderRight = hardwareMap.get(DcMotorEx.class, "sliderR");
+
+        sliderLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        sliderLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        sliderRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        sliderLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        sliderRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        sliderLeft.setPower(0.0);
+        sliderRight.setPower(0.0);
+
+        sliderLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        sliderRight.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        limitSwitchLeft = hardwareMap.get(DigitalChannel.class, "limitSwitch1");
+        limitSwitchRight = hardwareMap.get(DigitalChannel.class, "limitSwitch2");
+
+        outtakeClaw = hardwareMap.get(Servo.class, "outtakeClaw");
+        outtakeArmLeft = hardwareMap.get(Servo.class, "outtakeArmLeft");
+        outtakeArmRight = hardwareMap.get(Servo.class, "outtakeArmRight");
+
 //        intakeSliders = hardwareMap.get(DcMotorEx.class, "intake");
 //
 //        intakeSliders.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
