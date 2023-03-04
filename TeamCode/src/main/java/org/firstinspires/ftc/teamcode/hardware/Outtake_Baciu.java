@@ -17,7 +17,7 @@ public class Outtake_Baciu {
 
     public void init() {
         moveClaw(OuttakeClawState.CLOSED);
-        moveArm(OuttakeArmAngle.COLLECT);
+        moveArm(OuttakeArmAngle.COLLECT_CONE);
     }
 
     public void tickLimitSwitch() {
@@ -30,24 +30,23 @@ public class Outtake_Baciu {
     }
 
     public void tickSliders() {
-        if (slidersPosition != 0) {
-            double slidersPower;
-            if (Math.abs(slidersPosition - Hardware_Baciu.sliderLeft.getCurrentPosition()) < STABILIZATION_THRESHOLD) {
-                if (slidersPosition > Hardware_Baciu.sliderLeft.getCurrentPosition()) {
-                    slidersPower = OuttakeSlidersState.STOP.getPower();
-                } else {
-                    slidersPower = -OuttakeSlidersState.STOP.getPower();
-                }
+        if (slidersPosition == 0) return;
+        double slidersPower;
+        if (Math.abs(slidersPosition - Hardware_Baciu.sliderLeft.getCurrentPosition()) < STABILIZATION_THRESHOLD) {
+            if (slidersPosition > Hardware_Baciu.sliderLeft.getCurrentPosition()) {
+                slidersPower = OuttakeSlidersState.HOLD.getPower();
             } else {
-                if (slidersPosition > Hardware_Baciu.sliderLeft.getCurrentPosition()) {
-                    slidersPower = OuttakeSlidersState.MOVE.getPower() - Range.clip((double) Hardware_Baciu.sliderLeft.getCurrentPosition() / slidersPosition, 0, 0.8);
-                } else {
-                    slidersPower = -OuttakeSlidersState.MOVE.getPower() + Range.clip((double) slidersPosition / Hardware_Baciu.sliderLeft.getCurrentPosition(), 0, 0.8);
-                }
+                slidersPower = -OuttakeSlidersState.HOLD.getPower();
             }
-            Hardware_Baciu.sliderLeft.setPower(slidersPower);
-            Hardware_Baciu.sliderRight.setPower(slidersPower);
+        } else {
+            if (slidersPosition > Hardware_Baciu.sliderLeft.getCurrentPosition()) {
+                slidersPower = OuttakeSlidersState.MOVE.getPower() - Range.clip((double) Hardware_Baciu.sliderLeft.getCurrentPosition() / slidersPosition, 0, 0.8);
+            } else {
+                slidersPower = -OuttakeSlidersState.MOVE.getPower() + Range.clip((double) slidersPosition / Hardware_Baciu.sliderLeft.getCurrentPosition(), 0, 0.8);
+            }
         }
+        Hardware_Baciu.sliderLeft.setPower(slidersPower);
+        Hardware_Baciu.sliderRight.setPower(slidersPower);
     }
 
     public void lowerSliders() {
@@ -57,12 +56,12 @@ public class Outtake_Baciu {
     }
 
     public void moveSliders(final OuttakeSlidersPosition outtakeSlidersPosition) {
-        this.slidersPosition = outtakeSlidersPosition.getPosition();
+        this.slidersPosition = outtakeSlidersPosition.get();
     }
 
     public void moveArm(final OuttakeArmAngle outtakeArmAngle) {
-        Hardware_Baciu.outtakeArmLeft.setPosition(outtakeArmAngle.getAngle());
-        Hardware_Baciu.outtakeArmRight.setPosition(1 - outtakeArmAngle.getAngle());
+        Hardware_Baciu.outtakeArmLeft.setPosition(outtakeArmAngle.get());
+        Hardware_Baciu.outtakeArmRight.setPosition(1 - outtakeArmAngle.get());
     }
 
     public void moveClaw(final OuttakeClawState outtakeClawState) {

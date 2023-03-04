@@ -4,8 +4,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Drivetrain_Baciu {
 
-
-
     public void mecanumDrive(Gamepad gamepad) {
         double drive, strafe, turn, brake;
 
@@ -21,26 +19,26 @@ public class Drivetrain_Baciu {
         strafe = gamepad.left_stick_x;
         turn = gamepad.right_stick_x;
 
-        double flspeed, frspeed, blspeed, brspeed;
+        double flSpeed, frSpeed, blSpeed, brSpeed;
 
-        flspeed = drive + strafe + turn;
-        frspeed = drive - strafe - turn;
-        blspeed = drive - strafe + turn;
-        brspeed = drive + strafe - turn;
+        flSpeed = drive + strafe + turn;
+        frSpeed = drive - strafe - turn;
+        blSpeed = drive - strafe + turn;
+        brSpeed = drive + strafe - turn;
 
-        double max = Math.max(Math.max(Math.abs(flspeed), Math.abs(frspeed)), Math.max(Math.abs(blspeed), Math.abs(brspeed)));
+        double max = Math.max(Math.max(Math.abs(flSpeed), Math.abs(frSpeed)), Math.max(Math.abs(blSpeed), Math.abs(brSpeed)));
 
         if (max > 1) {
-            flspeed /= max;
-            frspeed /= max;
-            blspeed /= max;
-            brspeed /= max;
+            flSpeed /= max;
+            frSpeed /= max;
+            blSpeed /= max;
+            brSpeed /= max;
         }
 
-        Hardware_Baciu.motorFl.setPower(flspeed * brake);
-        Hardware_Baciu.motorFr.setPower(frspeed * brake);
-        Hardware_Baciu.motorBl.setPower(blspeed * brake);
-        Hardware_Baciu.motorBr.setPower(brspeed * brake);
+        Hardware_Baciu.motorFl.setPower(flSpeed * brake);
+        Hardware_Baciu.motorFr.setPower(frSpeed * brake);
+        Hardware_Baciu.motorBl.setPower(blSpeed * brake);
+        Hardware_Baciu.motorBr.setPower(brSpeed * brake);
     }
 
 }

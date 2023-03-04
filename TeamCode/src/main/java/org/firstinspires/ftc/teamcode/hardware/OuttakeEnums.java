@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 public class OuttakeEnums {
 
     public enum OuttakeArmAngle {
-        COLLECT(0.12),
+        COLLECT_CONE(0.12),
         DROP_LOW_JUNCTION(0.85),
         DROP_MID_OR_HIGH_JUNCTION(0.85);
 
@@ -13,7 +13,7 @@ public class OuttakeEnums {
             this.angle = angle;
         }
 
-        double getAngle() {
+        double get() {
             return angle;
         }
     }
@@ -44,14 +44,14 @@ public class OuttakeEnums {
             this.position = position;
         }
 
-        int getPosition() {
+        int get() {
             return position;
         }
     }
 
     public enum OuttakeSlidersState {
         MOVE(1.0),
-        STOP(0.003);
+        HOLD(0.003);
 
         private final double power;
 

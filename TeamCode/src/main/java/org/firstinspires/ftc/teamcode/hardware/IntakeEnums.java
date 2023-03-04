@@ -12,7 +12,7 @@ public class IntakeEnums {
             this.angle = angle;
         }
 
-        double getAngle() {
+        double get() {
             return angle;
         }
     }
@@ -27,7 +27,7 @@ public class IntakeEnums {
             this.angle = angle;
         }
 
-        double getAngle() {
+        double get() {
             return angle;
         }
     }
@@ -47,4 +47,19 @@ public class IntakeEnums {
         }
     }
 
+    public enum IntakeSlidersMovement {
+        RETRACT(0.5),
+        EXTEND(-0.5);
+        
+        private final double power;
+        
+        IntakeSlidersMovement(final double power) {
+            this.power = power;
+        }
+        
+        double getPower() {
+            return power;
+        }
+    }
+    
 }
