@@ -18,17 +18,17 @@ public class OuttakeEnums {
         }
     }
 
-    public enum OuttakeClawState {
+    public enum OuttakeClawPosition {
         OPEN(0.33),
         CLOSED(0.1);
 
         private final double position;
 
-        OuttakeClawState(final double position) {
+        OuttakeClawPosition(final double position) {
             this.position = position;
         }
 
-        double getPosition() {
+        double get() {
             return position;
         }
     }
@@ -49,17 +49,18 @@ public class OuttakeEnums {
         }
     }
 
-    public enum OuttakeSlidersState {
-        MOVE(1.0),
-        HOLD(0.003);
+    public enum OuttakeSlidersPower {
+        HOLD(0.003),
+        LOWER(-1.0),
+        RAISE(1.0);
 
         private final double power;
 
-        OuttakeSlidersState(final double power) {
+        OuttakeSlidersPower(final double power) {
             this.power = power;
         }
 
-        double getPower() {
+        double get() {
             return power;
         }
     }

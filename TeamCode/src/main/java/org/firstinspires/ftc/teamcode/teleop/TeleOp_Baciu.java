@@ -8,10 +8,10 @@ import org.firstinspires.ftc.teamcode.hardware.Drivetrain_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.Hardware_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeArmAngle;
 import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawAngle;
-import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeSlidersMovement;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeSlidersPower;
 import org.firstinspires.ftc.teamcode.hardware.Intake_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeArmAngle;
-import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClawState;
+import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClawPosition;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeSlidersPosition;
 import org.firstinspires.ftc.teamcode.hardware.Outtake_Baciu;
 
@@ -53,9 +53,9 @@ public class TeleOp_Baciu extends LinearOpMode {
             drivetrain.mecanumDrive(gamepad1);
 
             if (gamepad1.dpad_left) {
-                intake.moveSliders(IntakeSlidersMovement.RETRACT);
+                intake.moveSliders(IntakeSlidersPower.RETRACT);
             } else if (gamepad1.dpad_right) {
-                intake.moveSliders(IntakeSlidersMovement.EXTEND);
+                intake.moveSliders(IntakeSlidersPower.EXTEND);
             }
 
             if (gamepad1.a) {
@@ -103,9 +103,9 @@ public class TeleOp_Baciu extends LinearOpMode {
             }
 
             if (gamepad2.a) {
-                outtake.moveClaw(OuttakeClawState.CLOSED);
+                outtake.moveClaw(OuttakeClawPosition.CLOSED);
             } else if (gamepad2.b) {
-                outtake.moveClaw(OuttakeClawState.OPEN);
+                outtake.moveClaw(OuttakeClawPosition.OPEN);
             }
 
             outtake.tickLimitSwitch();

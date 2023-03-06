@@ -32,32 +32,32 @@ public class IntakeEnums {
         }
     }
 
-    public enum IntakeClawState {
+    public enum IntakeClawPosition {
         OPEN(0.46),
         CLOSED(0.0);
 
         private final double position;
 
-        IntakeClawState(final double position) {
+        IntakeClawPosition(final double position) {
             this.position = position;
         }
 
-        double getPosition() {
+        double get() {
             return position;
         }
     }
 
-    public enum IntakeSlidersMovement {
+    public enum IntakeSlidersPower {
         RETRACT(0.5),
         EXTEND(-0.5);
         
         private final double power;
         
-        IntakeSlidersMovement(final double power) {
+        IntakeSlidersPower(final double power) {
             this.power = power;
         }
         
-        double getPower() {
+        double get() {
             return power;
         }
     }

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.hardware.Drivetrain_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.Hardware_Baciu;
-import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawState;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawPosition;
 import org.firstinspires.ftc.teamcode.hardware.Intake_Baciu;
 
 @TeleOp(name = "TeleOp_Intake", group = "Baciu")
@@ -49,9 +49,9 @@ public class TeleOp_Intake extends LinearOpMode {
             intake.moveClawAngleManually(gamepad2);
 
             if (gamepad2.left_bumper) {
-                intake.moveClaw(IntakeClawState.OPEN);
+                intake.moveClaw(IntakeClawPosition.OPEN);
             } else if (gamepad2.right_bumper) {
-                intake.moveClaw(IntakeClawState.CLOSED);
+                intake.moveClaw(IntakeClawPosition.CLOSED);
             }
 
             buildTelemetryData();

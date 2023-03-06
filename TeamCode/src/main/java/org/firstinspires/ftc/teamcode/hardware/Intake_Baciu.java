@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeArmAngle;
 import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawAngle;
-import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawState;
-import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeSlidersMovement;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawPosition;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeSlidersPower;
 
 public class Intake_Baciu {
 
@@ -21,7 +21,7 @@ public class Intake_Baciu {
 
     public void init() {
         // TODO does order matter?
-        moveClaw(IntakeClawState.OPEN);
+        moveClaw(IntakeClawPosition.OPEN);
         Hardware_Baciu.intakeClawAngle.setPosition(clawAngle);
         Hardware_Baciu.intakeArm.setPosition(armAngle);
     }
@@ -38,10 +38,10 @@ public class Intake_Baciu {
         // TODO stabilize sliders
     }
 
-    public void moveSliders(final IntakeSlidersMovement intakeSlidersMovement) {
-        if (intakeSlidersMovement == IntakeSlidersMovement.RETRACT) {
+    public void moveSliders(final IntakeSlidersPower intakeSlidersPower) {
+        if (intakeSlidersPower == IntakeSlidersPower.RETRACT) {
             slidersPosition--;
-        } else if (intakeSlidersMovement == IntakeSlidersMovement.EXTEND) {
+        } else if (intakeSlidersPower == IntakeSlidersPower.EXTEND) {
             slidersPosition++;
         }
         slidersPosition = Range.clip(slidersPosition, 0, 1000);
@@ -49,7 +49,7 @@ public class Intake_Baciu {
 
     public void retractSliders() {
         slidersPosition = 0;
-        Hardware_Baciu.intakeSliders.setPower(IntakeSlidersMovement.RETRACT.getPower());
+        Hardware_Baciu.intakeSliders.setPower(IntakeSlidersPower.RETRACT.get());
     }
 
     public void moveSlidersToSavedPosition() {
@@ -68,8 +68,8 @@ public class Intake_Baciu {
         Hardware_Baciu.intakeClawAngle.setPosition(intakeClawAngle.get());
     }
 
-    public void moveClaw(final IntakeClawState intakeClawState) {
-        Hardware_Baciu.intakeClaw.setPosition(intakeClawState.getPosition());
+    public void moveClaw(final IntakeClawPosition intakeClawPosition) {
+        Hardware_Baciu.intakeClaw.setPosition(intakeClawPosition.get());
     }
 
     // Manual movement - sliders & virtual 4 bar

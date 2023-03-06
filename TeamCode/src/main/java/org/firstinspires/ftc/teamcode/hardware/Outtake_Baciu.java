@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeArmAngle;
-import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClawState;
+import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClawPosition;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeSlidersPosition;
-import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeSlidersState;
+import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeSlidersPower;
 
 public class Outtake_Baciu {
 
@@ -16,7 +16,7 @@ public class Outtake_Baciu {
     private int slidersPosition = 0;
 
     public void init() {
-        moveClaw(OuttakeClawState.CLOSED);
+        moveClaw(OuttakeClawPosition.CLOSED);
         moveArm(OuttakeArmAngle.COLLECT_CONE);
     }
 
@@ -34,15 +34,15 @@ public class Outtake_Baciu {
         double slidersPower;
         if (Math.abs(slidersPosition - Hardware_Baciu.sliderLeft.getCurrentPosition()) < STABILIZATION_THRESHOLD) {
             if (slidersPosition > Hardware_Baciu.sliderLeft.getCurrentPosition()) {
-                slidersPower = OuttakeSlidersState.HOLD.getPower();
+                slidersPower = OuttakeSlidersPower.HOLD.get();
             } else {
-                slidersPower = -OuttakeSlidersState.HOLD.getPower();
+                slidersPower = -OuttakeSlidersPower.HOLD.get();
             }
         } else {
             if (slidersPosition > Hardware_Baciu.sliderLeft.getCurrentPosition()) {
-                slidersPower = OuttakeSlidersState.MOVE.getPower() - Range.clip((double) Hardware_Baciu.sliderLeft.getCurrentPosition() / slidersPosition, 0, 0.8);
+                slidersPower = OuttakeSlidersPower.RAISE.get() - Range.clip((double) Hardware_Baciu.sliderLeft.getCurrentPosition() / slidersPosition, 0, 0.8);
             } else {
-                slidersPower = -OuttakeSlidersState.MOVE.getPower() + Range.clip((double) slidersPosition / Hardware_Baciu.sliderLeft.getCurrentPosition(), 0, 0.8);
+                slidersPower = OuttakeSlidersPower.LOWER.get() + Range.clip((double) slidersPosition / Hardware_Baciu.sliderLeft.getCurrentPosition(), 0, 0.8);
             }
         }
         Hardware_Baciu.sliderLeft.setPower(slidersPower);
@@ -51,8 +51,8 @@ public class Outtake_Baciu {
 
     public void lowerSliders() {
         slidersPosition = 0;
-        Hardware_Baciu.sliderLeft.setPower(-OuttakeSlidersState.MOVE.getPower());
-        Hardware_Baciu.sliderRight.setPower(-OuttakeSlidersState.MOVE.getPower());
+        Hardware_Baciu.sliderLeft.setPower(OuttakeSlidersPower.LOWER.get());
+        Hardware_Baciu.sliderRight.setPower(OuttakeSlidersPower.LOWER.get());
     }
 
     public void moveSliders(final OuttakeSlidersPosition outtakeSlidersPosition) {
@@ -64,9 +64,9 @@ public class Outtake_Baciu {
         Hardware_Baciu.outtakeArmRight.setPosition(1 - outtakeArmAngle.get());
     }
 
-    public void moveClaw(final OuttakeClawState outtakeClawState) {
-        Hardware_Baciu.outtakeClaw.setPosition(outtakeClawState.getPosition());
-        clawOpen = outtakeClawState == OuttakeClawState.OPEN;
+    public void moveClaw(final OuttakeClawPosition outtakeClawPosition) {
+        Hardware_Baciu.outtakeClaw.setPosition(outtakeClawPosition.get());
+        clawOpen = outtakeClawPosition == OuttakeClawPosition.OPEN;
     }
 
     public boolean isClawOpen() {
