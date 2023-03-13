@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.hardware.Drivetrain_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.Hardware_Baciu;
@@ -29,22 +28,10 @@ public class TeleOp_Baciu extends LinearOpMode {
         intake.init();
         outtake.init();
 
-        Gamepad.LedEffect ledEffect1 = new Gamepad.LedEffect.Builder()
-                .addStep(177, 94, 224, 2000)
-                .addStep(0, 0, 0, 2000)
-                .setRepeating(true)
-                .build();
-
-        Gamepad.LedEffect ledEffect2 = new Gamepad.LedEffect.Builder()
-                .addStep(129, 235, 108, 2000)
-                .addStep(0, 0, 0, 2000)
-                .setRepeating(true)
-                .build();
-
         waitForStart();
 
-        gamepad1.runLedEffect(ledEffect1);
-        gamepad2.runLedEffect(ledEffect2);
+        gamepad1.setLedColor(177, 94, 224, 30000);
+        gamepad2.setLedColor(129, 235, 108, 30000);
 
         // TODO constants for IntakeArmAngle, IntakeClawAngle (update in Intake class)
 
