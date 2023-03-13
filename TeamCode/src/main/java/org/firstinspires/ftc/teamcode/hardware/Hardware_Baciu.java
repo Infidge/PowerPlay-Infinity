@@ -92,17 +92,17 @@ public class Hardware_Baciu {
         outtakeArmLeft = hardwareMap.get(Servo.class, "outtakeArmLeft");
         outtakeArmRight = hardwareMap.get(Servo.class, "outtakeArmRight");
 
-        intakeSliders = hardwareMap.get(DcMotorEx.class, "intake");
-
-        intakeSliders.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intakeSliders.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeSliders.setPower(0.0);
-        intakeSliders.setDirection(DcMotorSimple.Direction.FORWARD);
-
-        intakeArm = hardwareMap.get(Servo.class, "intakeArm");
-        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
-        intakeClawAngle = hardwareMap.get(Servo.class, "moveIntake");
-
+//        intakeSliders = hardwareMap.get(DcMotorEx.class, "intake");
+//
+//        intakeSliders.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        intakeSliders.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        intakeSliders.setPower(0.0);
+//        intakeSliders.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        intakeArm = hardwareMap.get(Servo.class, "intakeArm");
+//        intakeClaw = hardwareMap.get(Servo.class, "intakeClaw");
+//        intakeClawAngle = hardwareMap.get(Servo.class, "moveIntake");
+//
 //        intakeSensor = hardwareMap.get(RevColorSensorV3.class, "intakeSensor");
 
         intakeLimitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitchIntake");

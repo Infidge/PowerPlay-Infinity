@@ -13,8 +13,9 @@ public class Outtake_Baciu {
     private static final int STABILIZATION_THRESHOLD = 15;
 
     private boolean clawOpen = false;
+    private boolean holdingSlidersPosition = false;
+
     private int slidersPosition = 0;
-    private boolean stabilizingSliders = false;
 
     public void init() {
         moveClaw(OuttakeClawPosition.CLOSED);
@@ -34,13 +35,14 @@ public class Outtake_Baciu {
         if (slidersPosition == 0) return;
         double slidersPower;
         if (Math.abs(slidersPosition - Hardware_Baciu.sliderLeft.getCurrentPosition()) < STABILIZATION_THRESHOLD) {
-            stabilizingSliders = true;
+            holdingSlidersPosition = true;
             if (slidersPosition > Hardware_Baciu.sliderLeft.getCurrentPosition()) {
                 slidersPower = OuttakeSlidersPower.HOLD.get();
             } else {
                 slidersPower = -OuttakeSlidersPower.HOLD.get();
             }
         } else {
+            holdingSlidersPosition = false;
             if (slidersPosition > Hardware_Baciu.sliderLeft.getCurrentPosition()) {
                 slidersPower = OuttakeSlidersPower.RAISE.get() - Range.clip((double) Hardware_Baciu.sliderLeft.getCurrentPosition() / slidersPosition, 0, 0.5);
             } else {
@@ -61,6 +63,10 @@ public class Outtake_Baciu {
         this.slidersPosition = outtakeSlidersPosition.get();
     }
 
+    public boolean isHoldingSlidersPosition() {
+        return holdingSlidersPosition;
+    }
+
     public void moveArm(final OuttakeArmAngle outtakeArmAngle) {
         Hardware_Baciu.outtakeArmLeft.setPosition(outtakeArmAngle.get());
         Hardware_Baciu.outtakeArmRight.setPosition(1 - outtakeArmAngle.get());
@@ -73,10 +79,6 @@ public class Outtake_Baciu {
 
     public boolean isClawOpen() {
         return clawOpen;
-    }
-
-    public boolean isStabilizingSliders() {
-        return stabilizingSliders;
     }
 
 }

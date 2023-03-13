@@ -7,15 +7,21 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeArmAngle;
 import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawAngle;
 import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawPosition;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeSlidersPosition;
 import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeSlidersPower;
 
 public class Intake_Baciu {
 
+    private static final int STABILIZATION_THRESHOLD = 15;
+
     @Deprecated
     private static final double MOTOR_POWER = 0.5;
 
+    private boolean holdingSlidersPosition = false;
+
     private double armAngle = 0.5;
     private double clawAngle = 0.5;
+
     private int slidersPosition = 0;
     private int slidersTargetPosition = 0;
 
@@ -27,6 +33,7 @@ public class Intake_Baciu {
     }
 
     public void tickLimitSwitch() {
+        // TODO check intakeLimitSwitch.getState()
         if (Hardware_Baciu.intakeSliders.getPower() < 0.0 && Hardware_Baciu.intakeLimitSwitch.getState()) {
             Hardware_Baciu.intakeSliders.setPower(0.0);
             Hardware_Baciu.intakeSliders.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -35,7 +42,27 @@ public class Intake_Baciu {
     }
 
     public void tickSliders() {
-        // TODO stabilize sliders
+        if (slidersPosition == 0) {
+            if (Hardware_Baciu.intakeSliders.getCurrentPosition() < STABILIZATION_THRESHOLD) return;
+            Hardware_Baciu.intakeSliders.setPower(IntakeSlidersPower.RETRACT.get());
+        }
+        double slidersPower;
+        if (Math.abs(slidersPosition - Hardware_Baciu.intakeSliders.getCurrentPosition()) < STABILIZATION_THRESHOLD) {
+            holdingSlidersPosition = true;
+            if (slidersPosition > Hardware_Baciu.intakeSliders.getCurrentPosition()) {
+                slidersPower = IntakeSlidersPower.HOLD.get();
+            } else {
+                slidersPower = -IntakeSlidersPower.HOLD.get();
+            }
+        } else {
+            holdingSlidersPosition = false;
+            if (slidersPosition > Hardware_Baciu.intakeSliders.getCurrentPosition()) {
+                slidersPower = IntakeSlidersPower.EXTEND.get() - Range.clip((double) Hardware_Baciu.intakeSliders.getCurrentPosition() / slidersPosition, 0, 0.2);
+            } else {
+                slidersPower = IntakeSlidersPower.RETRACT.get() + Range.clip((double) slidersPosition / Hardware_Baciu.intakeSliders.getCurrentPosition(), 0, 0.2);
+            }
+        }
+        Hardware_Baciu.intakeSliders.setPower(slidersPower);
     }
 
     public void moveSliders(final IntakeSlidersPower intakeSlidersPower) {
@@ -45,6 +72,10 @@ public class Intake_Baciu {
             slidersPosition++;
         }
         slidersPosition = Range.clip(slidersPosition, 0, 1000);
+    }
+
+    public void moveSlidersToPosition(final IntakeSlidersPosition intakeSlidersPosition) {
+
     }
 
     public void retractSliders() {
@@ -58,6 +89,10 @@ public class Intake_Baciu {
 
     public void saveSlidersPosition() {
         slidersTargetPosition = Hardware_Baciu.intakeSliders.getCurrentPosition();
+    }
+
+    public boolean isHoldingSlidersPosition() {
+        return holdingSlidersPosition;
     }
 
     public void moveArm(final IntakeArmAngle intakeArmAngle) {

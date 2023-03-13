@@ -5,9 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.hardware.Drivetrain_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.Hardware_Baciu;
-import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeArmAngle;
-import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawAngle;
-import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeSlidersPower;
 import org.firstinspires.ftc.teamcode.hardware.Intake_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeArmAngle;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClawPosition;
@@ -25,8 +22,8 @@ public class TeleOp_Baciu extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Hardware_Baciu.init(hardwareMap);
 
-        intake.init();
-        outtake.init();
+//        intake.init();
+//        outtake.init();
 
         waitForStart();
 
@@ -39,19 +36,19 @@ public class TeleOp_Baciu extends LinearOpMode {
             // Gamepad 1
             drivetrain.mecanumDrive(gamepad1);
 
-            if (gamepad1.dpad_left) {
-                intake.moveSliders(IntakeSlidersPower.RETRACT);
-            } else if (gamepad1.dpad_right) {
-                intake.moveSliders(IntakeSlidersPower.EXTEND);
-            }
-
-            if (gamepad1.a) {
-                intake.moveArm(IntakeArmAngle.PICKUP_CONE);
-                intake.moveClawAngle(IntakeClawAngle.PICKUP_CONE);
-            } else if (gamepad1.b) {
-                intake.moveArm(IntakeArmAngle.TRANSFER_CONE);
-                intake.moveClawAngle(IntakeClawAngle.TRANSFER_CONE);
-            }
+//            if (gamepad1.dpad_left) {
+//                intake.moveSliders(IntakeSlidersPower.RETRACT);
+//            } else if (gamepad1.dpad_right) {
+//                intake.moveSliders(IntakeSlidersPower.EXTEND);
+//            }
+//
+//            if (gamepad1.a) {
+//                intake.moveArm(IntakeArmAngle.PICKUP_CONE);
+//                intake.moveClawAngle(IntakeClawAngle.PICKUP_CONE);
+//            } else if (gamepad1.b) {
+//                intake.moveArm(IntakeArmAngle.TRANSFER_CONE);
+//                intake.moveClawAngle(IntakeClawAngle.TRANSFER_CONE);
+//            }
 
 //            if (gamepad1.a) {
 //                intake.moveClaw(IntakeClawState.OPEN);
@@ -59,18 +56,18 @@ public class TeleOp_Baciu extends LinearOpMode {
 //                intake.moveClaw(IntakeClawState.OPEN);
 //            }
 
-            if (gamepad1.x) {
-                intake.retractSliders();
-            }
-
-            if (gamepad1.left_bumper) {
-                intake.saveSlidersPosition();
-            } else if (gamepad1.right_bumper) {
-                intake.moveSlidersToSavedPosition();
-            }
-
-            intake.tickLimitSwitch();
-            intake.tickSliders();
+//            if (gamepad1.x) {
+//                intake.retractSliders();
+//            }
+//
+//            if (gamepad1.left_bumper) {
+//                intake.saveSlidersPosition();
+//            } else if (gamepad1.right_bumper) {
+//                intake.moveSlidersToSavedPosition();
+//            }
+//
+//            intake.tickLimitSwitch();
+//            intake.tickSliders();
 
             // Gamepad 2
             if (gamepad2.left_bumper) {
@@ -107,11 +104,11 @@ public class TeleOp_Baciu extends LinearOpMode {
         telemetry.addData("Left Encoder:", Hardware_Baciu.leftEncoder);
         telemetry.addData("Right Encoder:", Hardware_Baciu.rightEncoder);
         telemetry.addData("Front Encoder:", Hardware_Baciu.frontEncoder);
-        telemetry.addData("Intake Sliders:", Hardware_Baciu.intakeSliders.getCurrentPosition());
+//        telemetry.addData("Intake Sliders:", Hardware_Baciu.intakeSliders.getCurrentPosition());
         telemetry.addData("Intake Switch:", Hardware_Baciu.intakeLimitSwitch.getState());
-        telemetry.addData("Intake Arm:", Hardware_Baciu.intakeArm.getPosition());
-        telemetry.addData("Intake Claw Angle:", Hardware_Baciu.intakeClawAngle.getPosition());
-        telemetry.addData("Intake Claw:", Hardware_Baciu.intakeClaw.getPosition());
+//        telemetry.addData("Intake Arm:", Hardware_Baciu.intakeArm.getPosition());
+//        telemetry.addData("Intake Claw Angle:", Hardware_Baciu.intakeClawAngle.getPosition());
+//        telemetry.addData("Intake Claw:", Hardware_Baciu.intakeClaw.getPosition());
         telemetry.addData("Outtake Slider Left:", Hardware_Baciu.sliderLeft.getCurrentPosition());
         telemetry.addData("Outtake Slider Right:", Hardware_Baciu.sliderRight.getCurrentPosition());
         telemetry.addData("Outtake Switch Left:", Hardware_Baciu.limitSwitchLeft.getState());

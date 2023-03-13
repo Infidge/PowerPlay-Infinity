@@ -4,7 +4,10 @@ public class IntakeEnums {
 
     public enum IntakeArmAngle {
         PICKUP_CONE(0.5),
-        TRANSFER_CONE(0.5);
+        TRANSFER_CONE(0.5),
+
+        PICKUP_CONE_1(0.5),
+        PICKUP_CONE_2(0.5);
 
         private final double angle;
 
@@ -19,7 +22,10 @@ public class IntakeEnums {
 
     public enum IntakeClawAngle {
         PICKUP_CONE(0.5),
-        TRANSFER_CONE(0.5);
+        TRANSFER_CONE(0.5),
+
+        PICKUP_CONE_1(0.5),
+        PICKUP_CONE_2(0.5);
 
         private final double angle;
 
@@ -47,9 +53,24 @@ public class IntakeEnums {
         }
     }
 
+    public enum IntakeSlidersPosition {
+        AUTONOMOUS_CONE_STACK(100);
+
+        private final int position;
+
+        IntakeSlidersPosition(final int position) {
+            this.position = position;
+        }
+
+        int get() {
+            return position;
+        }
+    }
+
     public enum IntakeSlidersPower {
-        RETRACT(0.5),
-        EXTEND(-0.5);
+        HOLD(0.003),
+        EXTEND(0.5),
+        RETRACT(-0.5);
         
         private final double power;
         

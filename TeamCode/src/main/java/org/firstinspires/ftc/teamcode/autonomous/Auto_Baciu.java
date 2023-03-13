@@ -8,6 +8,10 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.examples.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.hardware.Hardware_Baciu;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeArmAngle;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawAngle;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeClawPosition;
+import org.firstinspires.ftc.teamcode.hardware.IntakeEnums.IntakeSlidersPosition;
 import org.firstinspires.ftc.teamcode.hardware.Intake_Baciu;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeArmAngle;
 import org.firstinspires.ftc.teamcode.hardware.OuttakeEnums.OuttakeClawPosition;
@@ -32,7 +36,6 @@ public class Auto_Baciu extends LinearOpMode {
         outtakeCone1,
         intakeCone2,
         outtakeCone2,
-        parkRobot,
         stopRobot
     }
 
@@ -85,6 +88,8 @@ public class Auto_Baciu extends LinearOpMode {
         boolean tagFound = false;
         int parkZone = 2;
 
+        ElapsedTime time = new ElapsedTime();
+
         waitForStart();
 
         telemetry.setMsTransmissionInterval(50);
@@ -125,16 +130,61 @@ public class Auto_Baciu extends LinearOpMode {
                     if (!drive.isBusy()) fsmStage++;
                     break;
                 case outtakeConePreload:
-                    outtake.moveSliders(OuttakeSlidersPosition.MID_JUNCTION);
                     outtake.moveArm(OuttakeArmAngle.DROP_MID_OR_HIGH_JUNCTION);
-                    while (!outtake.isStabilizingSliders()) {
+                    outtake.moveSliders(OuttakeSlidersPosition.MID_JUNCTION);
+                    while (!outtake.isHoldingSlidersPosition()) {
                         outtake.tickLimitSwitch();
                         outtake.tickSliders();
                     }
+
                     outtake.moveClaw(OuttakeClawPosition.OPEN);
+                    outtake.moveArm(OuttakeArmAngle.COLLECT_CONE);
+
+                    fsmStage++;
                     break;
                 case intakeCone1:
+                    intake.moveArm(IntakeArmAngle.PICKUP_CONE_1);
+                    intake.moveClawAngle(IntakeClawAngle.PICKUP_CONE_1);
+                    intake.moveClaw(IntakeClawPosition.OPEN);
+                    intake.moveSlidersToPosition(IntakeSlidersPosition.AUTONOMOUS_CONE_STACK);
 
+                    while (!intake.isHoldingSlidersPosition()) {
+                        intake.tickSliders();
+                    }
+
+                    intake.moveClaw(IntakeClawPosition.CLOSED);
+                    time.reset();
+                    while (time.seconds() < 0.3);
+
+                    intake.moveArm(IntakeArmAngle.TRANSFER_CONE);
+                    intake.moveClawAngle(IntakeClawAngle.TRANSFER_CONE);
+                    intake.retractSliders();
+
+                    while (!intake.isHoldingSlidersPosition()) {
+                        intake.tickLimitSwitch();
+                        intake.tickSliders();
+                    }
+
+                    fsmStage++;
+                    break;
+                case outtakeCone1:
+                    outtake.moveClaw(OuttakeClawPosition.CLOSED);
+                    time.reset();
+                    while (time.seconds() < 0.3);
+
+                    outtake.moveArm(OuttakeArmAngle.DROP_MID_OR_HIGH_JUNCTION);
+                    outtake.moveSliders(OuttakeSlidersPosition.MID_JUNCTION);
+                    while (!outtake.isHoldingSlidersPosition()) {
+                        outtake.tickLimitSwitch();
+                        outtake.tickSliders();
+                    }
+
+                    outtake.lowerSliders();
+
+                    fsmStage++;
+                    break;
+                case stopRobot:
+                    terminateOpModeNow();
                     break;
             }
         }
